@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quandl</title>
+
+    <script>
+        const API_KEY = 'kgdzsp7sn5XmzLubrHe5';
+
+        async function loadCourse() {
+            let today = new Date();
+            today.setDate(new Date().getDate() -1);
+            let startDate = today.toISOString().split('T')[0];
+            let endDate = today.toISOString().split('T')[0];
+            let url =`https://www.quandl.com/api/v3/datasets/BITFINEX/BTCJPY?start_date=${startDate}&end_date=${endDate}&api_key=${API_KEY}`;
+            let response = await fetch(url);
+            let responseAsJSON = await response.json();
+            showCourse(responseAsJSON);
+        }
+
+        function showCourse(responseAsJSON) {
+            let bitcoinToday = responseAsJSON['dataset']['data'][0][3];
+            document.getElementById('bitcoininUSDToday').innerHTML = bitcoinToday;
+        }
+    </script>
+</head>
+<body onload="loadCourse()">
+    <h1>Was kostet aktuell ein Bitcoin?</h1>
+
+    <div>Aktuell kostet ein Bitcoin <b id="bitcoininUSDToday">60.000,00</b> USD</div>
+</body>
+</html>
